@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FitMent — Your Fitness. Your Trainer. One App.</title>
+<meta name="description" content="FitMent connects fitness enthusiasts with expert trainers and associations. Book classes, track progress, and stay connected." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --accent: #E84C30;
+    --accent-h: #D43F25;
+    --ink: #111111;
+    --ink-2: #1A1A1A;
+    --cream: #F5F2ED;
+    --cream-2: #EFEAE0;
+    --white: #FFFFFF;
+    --line: rgba(17, 17, 17, 0.07);
+    --line-2: rgba(17, 17, 17, 0.12);
+    --line-d: rgba(255, 255, 255, 0.10);
+    --muted: rgba(17, 17, 17, 0.55);
+    --muted-2: rgba(17, 17, 17, 0.40);
+    --muted-d: rgba(255, 255, 255, 0.62);
+    --green: #16A34A;
+    --green-soft: rgba(22, 163, 74, 0.12);
+
+    --sans: 'Archivo', system-ui, -apple-system, sans-serif;
+
+    --max: 1280px;
+    --pad: clamp(20px, 4vw, 44px);
+    --r: 14px;
+    --r-lg: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  ::selection { background: var(--accent); color: white; }
+
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-left: var(--pad);
+    padding-right: var(--pad);
+  }
+
+  /* ============ EYEBROW (small label) ============ */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 14px;
+    height: 1.5px;
+    background: var(--ink);
+    transform: skewX(-20deg);
+  }
+  .eyebrow--white { color: var(--muted-d); }
+  .eyebrow--white::before { background: white; }
+  /* Red eyebrow reserved for the most important promotional moments only */
+  .eyebrow--accent { color: var(--accent); }
+  .eyebrow--accent::before { background: var(--accent); }
+
+  /* ============ LOGO ============ */
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .logo__mark { width: 24px; height: 24px; display: inline-block; }
+  .logo__mark svg { width: 100%; height: 100%; display: block; }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(245, 242, 237, 0.85);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .nav__links { display: flex; align-items: center; gap: 32px; }
+  .nav__links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    opacity: 0.7;
+    transition: opacity .2s ease;
+  }
+  .nav__links a:hover, .nav__links a.active { opacity: 1; }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 46px;
+    padding: 0 22px;
+    border-radius: 99px;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    white-space: nowrap;
+  }
+  .btn--primary { background: var(--accent); color: white; }
+  .btn--primary:hover { background: var(--accent-h); transform: translateY(-1px); }
+  .btn--dark { background: var(--ink); color: white; }
+  .btn--dark:hover { background: #000; transform: translateY(-1px); }
+  .btn--ghost {
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line-2);
+  }
+  .btn--ghost:hover { border-color: var(--ink); }
+  .btn--ghost-light {
+    color: white;
+    background: transparent;
+    border: 1px solid var(--line-d);
+  }
+  .btn--ghost-light:hover { background: white; color: var(--ink); border-color: white; }
+  .btn--lg { height: 52px; padding: 0 26px; font-size: 14px; }
+  .arrow { transition: transform .2s ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  /* ============ HERO (left text, right image) ============ */
+  .hero {
+    background: var(--cream);
+    padding: clamp(60px, 9vw, 110px) 0 clamp(60px, 9vw, 100px);
+    position: relative;
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+  }
+  .hero__content {
+    text-align: left;
+  }
+  .hero__eyebrow {
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(46px, 6vw, 80px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .hero h1 .light {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .hero p.lead {
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+  .hero__ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px 8px 13px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .hero__status .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 4px var(--green-soft);
+  }
+
+  /* Right-side hero image */
+  .hero__visual {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--cream-2);
+    box-shadow: 0 30px 60px -30px rgba(17,17,17,0.20);
+  }
+  .hero__visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero__visual__card {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px -8px rgba(0,0,0,0.18);
+  }
+  .hero__visual__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    flex-shrink: 0;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--line);
+    overflow: hidden;
+    background-image: url('https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=120&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+  .hero__visual__text {
+    font-size: 12px;
+    line-height: 1.35;
+    flex: 1;
+    min-width: 0;
+  }
+  .hero__visual__text strong {
+    font-weight: 600;
+    font-size: 13.5px;
+    display: block;
+    margin-bottom: 2px;
+    color: var(--ink);
+  }
+  .hero__visual__text .muted { color: var(--muted); font-size: 11.5px; }
+  .hero__visual__pill {
+    background: var(--ink);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 99px;
+    white-space: nowrap;
+  }
+
+  /* Floating tag, top-right corner */
+  .hero__visual__tag {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(17,17,17,0.85);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero__visual__tag .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(232, 76, 48, 0.25);
+  }
+
+  /* ============ MARQUEE (kept minimal, no red dividers) ============ */
+  .marquee {
+    background: var(--ink);
+    padding: 20px 0;
+    overflow: hidden;
+    color: white;
+  }
+  .marquee__track {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: scroll 36s linear infinite;
+    width: max-content;
+  }
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 48px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .marquee__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--muted-d);
+    flex-shrink: 0;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ============ SECTION ============ */
+  .section { padding: clamp(80px, 10vw, 130px) 0; }
+  .section--cream { background: var(--cream); }
+  .section--cream-2 { background: var(--cream-2); }
+  .section--white { background: white; }
+
+  .sec-head {
+    margin-bottom: clamp(48px, 6vw, 72px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sec-num {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .sec-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sec-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--line-2);
+  }
+
+  /* ============ WHY FITMENT ============ */
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(40px, 6vw, 100px);
+    align-items: start;
+  }
+  .why-left h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .why-left > p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 360px;
+    margin-bottom: 36px;
+  }
+  .why-left__image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: var(--cream-2);
+  }
+  .why-left__image img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .why-list { display: flex; flex-direction: column; }
+  .why-row {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 28px;
+    padding: 36px 0;
+    border-top: 1px solid var(--line);
+    align-items: start;
+  }
+  .why-row:first-child { border-top: none; padding-top: 0; }
+  .why-row:last-child { padding-bottom: 0; }
+  .why-row__num {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    padding-top: 4px;
+  }
+  .why-row h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .why-row p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 500px;
+  }
+
+  /* ============ BUILT FOR EVERYONE ============ */
+  .built__head {
+    max-width: 720px;
+    margin-bottom: 56px;
+  }
+  .built__head h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .built__head p {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 500px;
+  }
+
+  .built__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .built-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .built-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--line-2);
+    box-shadow: 0 24px 50px -28px rgba(17,17,17,0.16);
+  }
+  .built-card__image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    position: relative;
+    background: var(--cream-2);
+  }
+  .built-card__image img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .built-card:hover .built-card__image img { transform: scale(1.04); }
+  .built-card__body {
+    padding: 28px 26px 26px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .built-card__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .built-card__title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .built-card__desc {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex-grow: 1;
+    margin-bottom: 22px;
+  }
+  .built-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .built-card__link svg { transition: transform .2s ease; }
+  .built-card:hover .built-card__link svg { transform: translateX(4px); }
+
+  /* ============ EVERYTHING MOVES (dark, restrained) ============ */
+  .moves {
+    background: var(--ink);
+    color: white;
+    padding: clamp(80px, 10vw, 130px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .moves .sec-divider { background: var(--line-d); }
+  .moves .sec-num { color: white; }
+  .moves .sec-label { color: var(--muted-d); }
+
+  .moves-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(40px, 6vw, 100px);
+    align-items: center;
+  }
+
+  .moves-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 580px;
+  }
+  .moves-photo {
+    position: absolute;
+    width: 260px;
+    height: 360px;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: var(--ink-2);
+    top: 40px;
+    left: 0;
+    z-index: 1;
+  }
+  .moves-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .phone {
+    position: relative;
+    width: 270px;
+    height: 540px;
+    background: #0a0a0a;
+    border-radius: 42px;
+    padding: 8px;
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.6), 0 0 0 1.5px rgba(255,255,255,0.08);
+    z-index: 2;
+    margin-left: 110px;
+    margin-top: 30px;
+  }
+  .phone__notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 24px;
+    background: #0a0a0a;
+    border-radius: 0 0 14px 14px;
+    z-index: 3;
+  }
+  .phone__screen {
+    background: white;
+    border-radius: 34px;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone__top {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 22px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .phone__brand {
+    text-align: center;
+    padding: 20px 0 18px;
+  }
+  .phone__brand .logo { font-size: 16px; }
+  .phone__hero-img {
+    margin: 0 18px;
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--cream-2);
+    position: relative;
+  }
+  .phone__hero-img img { width: 100%; height: 100%; object-fit: cover; }
+  .phone__hero-img__overlay {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .phone__row {
+    margin: 12px 18px 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cream);
+    border-radius: 12px;
+  }
+  .phone__row__avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--ink);
+    flex-shrink: 0;
+  }
+  .phone__row__name {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .phone__row__sub {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .phone__row__pill {
+    margin-left: auto;
+    background: var(--ink);
+    color: white;
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 99px;
+  }
+  .phone__cta {
+    margin: 14px 18px 18px;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .moves-content h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .moves-content > p {
+    color: var(--muted-d);
+    font-size: 16px;
+    margin-bottom: 36px;
+    max-width: 460px;
+  }
+  .moves-list {
+    list-style: none;
+    margin-bottom: 40px;
+    border-top: 1px solid var(--line-d);
+  }
+  .moves-list li {
+    display: flex;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line-d);
+    align-items: center;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  .moves-list svg {
+    flex-shrink: 0;
+    color: white;
+    opacity: 0.55;
+  }
+
+  /* ============ SPORTS GRID ============ */
+  .sports-head {
+    max-width: 720px;
+    margin-bottom: 48px;
+  }
+  .sports-head h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .sports-head p {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 500px;
+  }
+
+  .sports-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+  .sport-card {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--r);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background: var(--cream-2);
+  }
+  .sport-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .sport-card:hover img { transform: scale(1.06); }
+  .sport-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(17,17,17,0.85) 100%);
+    pointer-events: none;
+  }
+  .sport-card__name {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.005em;
+    z-index: 2;
+  }
+  .sport-card__count {
+    position: absolute;
+    left: 14px;
+    bottom: 32px;
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    font-weight: 500;
+    z-index: 2;
+  }
+
+  /* ============ STATS BAND ============ */
+  .stats-band {
+    background: var(--ink);
+    color: white;
+    padding: 70px 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .stat { padding-left: 22px; border-left: 1px solid var(--line-d); }
+  .stat__val {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 50px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+  }
+  .stat__lbl {
+    font-size: 12.5px;
+    color: var(--muted-d);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ FINAL CTA (red, used once with intention) ============ */
+  .red-cta {
+    background: var(--accent);
+    color: white;
+    padding: clamp(80px, 11vw, 130px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .red-cta__inner {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .red-cta h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(44px, 6vw, 80px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+  }
+  .red-cta p {
+    color: rgba(255,255,255,0.88);
+    font-size: 17px;
+    max-width: 420px;
+    margin-bottom: 36px;
+    line-height: 1.55;
+  }
+  .red-cta__ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .red-cta__image {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.35);
+  }
+  .red-cta__image img { width: 100%; height: 100%; object-fit: cover; }
+  .red-cta .eyebrow {
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 24px;
+  }
+  .red-cta .eyebrow::before { background: white; }
+
+  /* ============ CONTACT SECTION ============ */
+  .contact {
+    background: var(--cream);
+    padding: clamp(80px, 10vw, 130px) 0;
+  }
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(40px, 6vw, 90px);
+    align-items: start;
+  }
+  .contact__left h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 16px 0 24px;
+  }
+  .contact__left p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 380px;
+  }
+  .contact__details {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line-2);
+  }
+  .contact__detail {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .contact__detail__icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    color: var(--ink);
+  }
+  .contact__detail__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .contact__detail__value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .contact__detail__value a:hover { color: var(--accent); }
+
+  /* Form */
+  .contact__form {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: clamp(28px, 3.5vw, 40px);
+  }
+  .contact__form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .field label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .field label .opt {
+    color: var(--muted-2);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 13px 14px;
+    transition: border-color .2s ease, background .2s ease;
+    width: 100%;
+    outline: none;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--muted-2); }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    background: white;
+    border-color: var(--ink);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 110px;
+    font-family: var(--sans);
+    line-height: 1.55;
+  }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M1 1l4 4 4-4' stroke='%23111' stroke-width='1.5' fill='none' stroke-linecap='round'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .contact__form button[type="submit"] {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .contact__form-foot {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .contact__form-foot a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    background: var(--ink);
+    color: white;
+    padding: 80px 0 0;
+    overflow: hidden;
+  }
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 56px;
+  }
+  .footer__brand .logo { color: white; font-size: 20px; }
+  .footer__tag {
+    color: var(--muted-d);
+    font-size: 14px;
+    margin: 20px 0 0;
+    max-width: 340px;
+    line-height: 1.65;
+  }
+  .footer__col h6 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-d);
+    margin-bottom: 22px;
+  }
+  .footer__col ul { list-style: none; }
+  .footer__col li { margin-bottom: 14px; }
+  .footer__col a {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color .2s ease;
+    opacity: 0.9;
+  }
+  .footer__col a:hover { opacity: 1; }
+  .footer__col .email {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 22px;
+    display: block;
+    letter-spacing: -0.005em;
+  }
+  .footer__socials { display: flex; gap: 18px; }
+  .footer__socials a {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted-d);
+    opacity: 1;
+  }
+  .footer__socials a:hover { color: white; }
+  .footer__big {
+    text-align: center;
+    padding: 32px 0 12px;
+    border-top: 1px solid var(--line-d);
+    overflow: hidden;
+  }
+  .footer__big-text {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(80px, 19vw, 240px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: rgba(255,255,255,0.04);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--line-d);
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted-d);
+  }
+
+  /* ============ REVEAL ============ */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    .hero__grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero__visual { aspect-ratio: 16 / 11; max-width: 600px; }
+    .why-grid, .moves-grid, .red-cta__inner { grid-template-columns: 1fr; gap: 40px; }
+    .built__grid { grid-template-columns: 1fr 1fr; }
+    .sports-grid { grid-template-columns: repeat(3, 1fr); }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer__top { grid-template-columns: 1fr 1fr; }
+    .nav__links { display: none; }
+    .moves-visual { height: 500px; }
+    .moves-photo { width: 220px; height: 300px; }
+    .phone { margin-left: 70px; }
+    .contact__grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 44px; }
+    .hero__visual { aspect-ratio: 4 / 5; }
+    .built__grid { grid-template-columns: 1fr; }
+    .sports-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .footer__top { grid-template-columns: 1fr; gap: 32px; }
+    .why-row { grid-template-columns: 1fr; gap: 8px; padding: 28px 0; }
+    .moves-visual { flex-direction: column; gap: 20px; height: auto; }
+    .moves-photo { position: relative; top: 0; left: 0; }
+    .phone { margin-left: 0; margin-top: 0; }
+    .hero__visual__card { left: 12px; right: 12px; bottom: 12px; padding: 10px 12px; }
+    .hero__visual__pill { display: none; }
+    .contact__form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="container nav__inner">
+    <a href="#" class="logo">
+      <span class="logo__mark">
+        <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 4 L18 4 L14 10 L9 10 L9 14 L16 14 L13 20 L9 20 L9 24 L4 24 Z" fill="#E84C30"/>
+          <path d="M19 4 L24 4 L18 14 L13 14 Z" fill="#111111"/>
+        </svg>
+      </span>
+      FitMent
+    </a>
+    <div class="nav__links">
+      <a href="#" class="active">Home</a>
+      <a href="#why">About</a>
+      <a href="#built">For Users</a>
+      <a href="#built">For Trainers</a>
+      <a href="#built">For Associations</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#download" class="btn btn--primary">Get the App</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__content">
+        <span class="eyebrow hero__eyebrow">The Fitness Connection App</span>
+        <h1>
+          Your fitness.<br>
+          Your trainer.<br>
+          <span class="light">One app.</span>
+        </h1>
+        <p class="lead">FitMent connects fitness enthusiasts with expert trainers and associations. Book classes, track progress, and stay connected — all in one place.</p>
+        <div class="hero__ctas">
+          <a href="#download" class="btn btn--primary btn--lg">
+            Get the App
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#why" class="btn btn--ghost btn--lg">How it works</a>
+        </div>
+        <div class="hero__status">
+          <span class="dot"></span>
+          Live in Bengaluru &amp; Kochi · 240+ trainers ready
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80" alt="Trainer coaching a session" loading="eager" />
+        <div class="hero__visual__tag">
+          <span class="live-dot"></span>
+          Bengaluru · Now
+        </div>
+        <div class="hero__visual__card">
+          <div class="hero__visual__avatar"></div>
+          <div class="hero__visual__text">
+            <strong>Arjun Mehta · Badminton</strong>
+            <span class="muted">★ 4.9 · 800m away · ₹600 / session</span>
+          </div>
+          <span class="hero__visual__pill">Book</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee">
+  <div class="marquee__track">
+    <div class="marquee__item">
+      <span>Train</span><span class="marquee__dot"></span>
+      <span>Connect</span><span class="marquee__dot"></span>
+      <span>Coach</span><span class="marquee__dot"></span>
+      <span>Showcase</span><span class="marquee__dot"></span>
+      <span>Manage</span><span class="marquee__dot"></span>
+      <span>Grow</span><span class="marquee__dot"></span>
+    </div>
+    <div class="marquee__item">
+      <span>Train</span><span class="marquee__dot"></span>
+      <span>Connect</span><span class="marquee__dot"></span>
+      <span>Coach</span><span class="marquee__dot"></span>
+      <span>Showcase</span><span class="marquee__dot"></span>
+      <span>Manage</span><span class="marquee__dot"></span>
+      <span>Grow</span><span class="marquee__dot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 01 WHY FITMENT ============ -->
+<section class="section section--cream" id="why">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <span class="sec-label">Why FitMent</span>
+      <span class="sec-divider"></span>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-left reveal">
+        <h2>One app for the whole journey.</h2>
+        <p>From first search to daily sessions, FitMent pulls every part of training into a single place.</p>
+        <div class="why-left__image">
+          <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80" alt="Athlete in motion" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="why-list reveal">
+        <div class="why-row">
+          <div class="why-row__num">01</div>
+          <div>
+            <h3>Showcase your expertise</h3>
+            <p>Trainers build rich profiles that highlight skills, credentials, and real results to attract eager learners.</p>
+          </div>
+        </div>
+        <div class="why-row">
+          <div class="why-row__num">02</div>
+          <div>
+            <h3>Manage your sessions</h3>
+            <p>Schedule classes, track attendance, collect fees, and stay connected without the spreadsheet chaos.</p>
+          </div>
+        </div>
+        <div class="why-row">
+          <div class="why-row__num">03</div>
+          <div>
+            <h3>Connect with the right people</h3>
+            <p>Smart matching brings users, trainers, and associations together around shared fitness goals.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 BUILT FOR EVERYONE ============ -->
+<section class="section section--cream-2" id="built">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span>
+      <span class="sec-label">Built for Everyone</span>
+      <span class="sec-divider"></span>
+    </div>
+
+    <div class="built__head reveal">
+      <h2>Made for users, trainers &amp; associations.</h2>
+      <p>Whatever your role in fitness, FitMent has a lane built for it.</p>
+    </div>
+
+    <div class="built__grid reveal">
+      <a href="#" class="built-card">
+        <div class="built-card__image">
+          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80" alt="Learner during workout" loading="lazy" />
+        </div>
+        <div class="built-card__body">
+          <div class="built-card__label">01 · For Users</div>
+          <div class="built-card__title">Find your trainer</div>
+          <div class="built-card__desc">Discover verified trainers who match your goals, schedule, and budget — all within walking distance.</div>
+          <span class="built-card__link">
+            Explore for users
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="#" class="built-card">
+        <div class="built-card__image">
+          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=80" alt="Trainer coaching a client" loading="lazy" />
+        </div>
+        <div class="built-card__body">
+          <div class="built-card__label">02 · For Trainers</div>
+          <div class="built-card__title">Grow your practice</div>
+          <div class="built-card__desc">Showcase your expertise, fill your calendar, and get paid on time. Keep 87% of every session.</div>
+          <span class="built-card__link">
+            Explore for trainers
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="#" class="built-card">
+        <div class="built-card__image">
+          <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=900&q=80" alt="Group fitness community" loading="lazy" />
+        </div>
+        <div class="built-card__body">
+          <div class="built-card__label">03 · For Associations</div>
+          <div class="built-card__title">Scale your community</div>
+          <div class="built-card__desc">Coordinate trainers, manage members, run community programmes — all from a single dashboard.</div>
+          <span class="built-card__link">
+            Explore for associations
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 EVERYTHING MOVES ============ -->
+<section class="moves" id="app">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span>
+      <span class="sec-label">In the App</span>
+      <span class="sec-divider"></span>
+    </div>
+
+    <div class="moves-grid">
+      <div class="moves-visual reveal">
+        <div class="moves-photo">
+          <img src="https://images.unsplash.com/photo-1593810451137-77d96b315fc3?auto=format&fit=crop&w=700&q=80" alt="Trainer in action" loading="lazy" />
+        </div>
+        <div class="phone">
+          <div class="phone__notch"></div>
+          <div class="phone__screen">
+            <div class="phone__top">
+              <span>9:41</span>
+              <span>5G ●</span>
+            </div>
+            <div class="phone__brand">
+              <span class="logo">
+                <span class="logo__mark">
+                  <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 4 L18 4 L14 10 L9 10 L9 14 L16 14 L13 20 L9 20 L9 24 L4 24 Z" fill="#E84C30"/>
+                    <path d="M19 4 L24 4 L18 14 L13 14 Z" fill="#111111"/>
+                  </svg>
+                </span>
+                FitMent
+              </span>
+            </div>
+            <div class="phone__hero-img">
+              <img src="https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=400&q=80" alt="Sport" />
+              <div class="phone__hero-img__overlay">
+                <span>Badminton · 6PM Today</span>
+                <span>3 spots left</span>
+              </div>
+            </div>
+            <div class="phone__row">
+              <div class="phone__row__avatar"></div>
+              <div>
+                <div class="phone__row__name">Arjun Mehta</div>
+                <div class="phone__row__sub">4.9 ★ · Badminton</div>
+              </div>
+              <span class="phone__row__pill">800m</span>
+            </div>
+            <div class="phone__row">
+              <div class="phone__row__avatar"></div>
+              <div>
+                <div class="phone__row__name">Priya Sharma</div>
+                <div class="phone__row__sub">4.8 ★ · Yoga</div>
+              </div>
+              <span class="phone__row__pill">1.2km</span>
+            </div>
+            <div class="phone__cta">Book Session</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="moves-content reveal">
+        <h2>Everything moves with you.</h2>
+        <p>Schedule, track, pay, and stay connected. FitMent keeps your fitness life organised on any device.</p>
+
+        <ul class="moves-list">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Verified trainer profiles you can trust
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Simple booking with instant reminders
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Secure in-app payments
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Progress tracking that keeps you moving
+          </li>
+        </ul>
+
+        <a href="#download" class="btn btn--ghost-light btn--lg">
+          Get the App
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 POPULAR SPORTS ============ -->
+<section class="section section--cream">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">04</span>
+      <span class="sec-label">Popular Sports</span>
+      <span class="sec-divider"></span>
+    </div>
+
+    <div class="sports-head reveal">
+      <h2>Twelve sports. One platform.</h2>
+      <p>From racket sports to strength training — find a coach for what you actually want to play.</p>
+    </div>
+
+    <div class="sports-grid reveal">
+      <div class="sport-card">
+        <img src="https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=500&q=80" alt="Badminton" loading="lazy" />
+        <span class="sport-card__count">42 coaches</span>
+        <span class="sport-card__name">Badminton</span>
+      </div>
+      <div class="sport-card">
+        <img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?auto=format&fit=crop&w=500&q=80" alt="Football" loading="lazy" />
+        <span class="sport-card__count">28 coaches</span>
+        <span class="sport-card__name">Football</span>
+      </div>
+      <div class="sport-card">
+        <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=500&q=80" alt="Cricket" loading="lazy" />
+        <span class="sport-card__count">36 coaches</span>
+        <span class="sport-card__name">Cricket</span>
+      </div>
+      <div class="sport-card">
+        <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=500&q=80" alt="Yoga" loading="lazy" />
+        <span class="sport-card__count">54 coaches</span>
+        <span class="sport-card__name">Yoga</span>
+      </div>
+      <div class="sport-card">
+        <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=500&q=80" alt="Swimming" loading="lazy" />
+        <span class="sport-card__count">18 coaches</span>
+        <span class="sport-card__name">Swimming</span>
+      </div>
+      <div class="sport-card">
+        <img src="https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&w=500&q=80" alt="Tennis" loading="lazy" />
+        <span class="sport-card__count">24 coaches</span>
+        <span class="sport-card__name">Tennis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS BAND ============ -->
+<section class="stats-band">
+  <div class="container stats-grid">
+    <div class="stat reveal">
+      <div class="stat__val">240+</div>
+      <div class="stat__lbl">Trainers ready</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat__val">12</div>
+      <div class="stat__lbl">Sports covered</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat__val">87%</div>
+      <div class="stat__lbl">Paid to trainers</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat__val">2</div>
+      <div class="stat__lbl">Cities live · 4 on waitlist</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RED CTA ============ -->
+<section class="red-cta" id="download">
+  <div class="container">
+    <div class="red-cta__inner">
+      <div>
+        <span class="eyebrow reveal">Ready when you are</span>
+        <h2 class="reveal">Start where you are.</h2>
+        <p class="reveal">Download FitMent and connect with the trainer who will get you moving — wherever you are, whenever you're ready.</p>
+        <div class="red-cta__ctas reveal">
+          <a href="#" class="btn btn--dark btn--lg">
+            Get the App
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#why" class="btn btn--ghost-light btn--lg">About FitMent</a>
+        </div>
+      </div>
+      <div class="red-cta__image reveal">
+        <img src="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&w=700&q=80" alt="Athlete starting" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-num">05</span>
+      <span class="sec-label">Get in Touch</span>
+      <span class="sec-divider"></span>
+    </div>
+
+    <div class="contact__grid">
+      <div class="contact__left reveal">
+        <h2>Let's talk.</h2>
+        <p>Questions about partnering, listing a venue, joining as a trainer, or anything else? Send us a note — we read every message.</p>
+
+        <div class="contact__details">
+          <div class="contact__detail">
+            <div class="contact__detail__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact__detail__label">Email</div>
+              <div class="contact__detail__value"><a href="mailto:hello@fitment.app">hello@fitment.app</a></div>
+            </div>
+          </div>
+          <div class="contact__detail">
+            <div class="contact__detail__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact__detail__label">Based in</div>
+              <div class="contact__detail__value">Bengaluru &amp; Kochi, India</div>
+            </div>
+          </div>
+          <div class="contact__detail">
+            <div class="contact__detail__icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+            </div>
+            <div>
+              <div class="contact__detail__label">Response time</div>
+              <div class="contact__detail__value">Within 24 hours, Mon–Fri</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact__form reveal" onsubmit="event.preventDefault(); this.querySelector('button[type=submit]').textContent = 'Sent — we\'ll be in touch soon ✓'; this.querySelector('button[type=submit]').disabled = true;">
+        <div class="contact__form-row">
+          <div class="field">
+            <label for="cf-name">Your name</label>
+            <input id="cf-name" name="name" type="text" placeholder="Full name" required />
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+
+        <div class="contact__form-row">
+          <div class="field">
+            <label for="cf-role">I am a <span class="opt">(select one)</span></label>
+            <select id="cf-role" name="role" required>
+              <option value="" disabled selected>Choose your role</option>
+              <option value="user">Looking for a trainer</option>
+              <option value="trainer">A trainer / coach</option>
+              <option value="venue">A venue or association</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-phone">Phone <span class="opt">(optional)</span></label>
+            <input id="cf-phone" name="phone" type="tel" placeholder="+91 98765 43210" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" placeholder="Tell us a bit about what you're looking for…" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--lg">
+          Send message
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="contact__form-foot">
+          By submitting, you agree to our <a href="#">Privacy Policy</a>.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#" class="logo">
+          <span class="logo__mark">
+            <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 4 L18 4 L14 10 L9 10 L9 14 L16 14 L13 20 L9 20 L9 24 L4 24 Z" fill="#E84C30"/>
+              <path d="M19 4 L24 4 L18 14 L13 14 Z" fill="#FFFFFF"/>
+            </svg>
+          </span>
+          FitMent
+        </a>
+        <p class="footer__tag">FitMent is the mobile app that connects fitness enthusiasts with expert trainers and associations. Showcase expertise, manage sessions, and grow your fitness journey in one place.</p>
+      </div>
+
+      <div class="footer__col">
+        <h6>Explore</h6>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#why">About</a></li>
+          <li><a href="#built">For Users</a></li>
+          <li><a href="#built">For Trainers</a></li>
+          <li><a href="#built">For Associations</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h6>Cities</h6>
+        <ul>
+          <li><a href="#">Bengaluru</a></li>
+          <li><a href="#">Kochi</a></li>
+          <li><a href="#">Chennai — soon</a></li>
+          <li><a href="#">Hyderabad — soon</a></li>
+        </ul>
+        <div class="footer__socials" style="margin-top: 24px;">
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Facebook</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__big">
+      <div class="footer__big-text">FITMENT</div>
+    </div>
+
+    <div class="footer__bottom">
+      <div>© 2026 FitMent. All rights reserved.</div>
+      <div>Connecting people with great trainers.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
